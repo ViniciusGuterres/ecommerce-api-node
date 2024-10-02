@@ -1,10 +1,9 @@
 const bodyParser = require('body-parser');
 
-const Product = require('../models/product.js');
 const ProductService = require('../services/productService');
 const ProductController = require('../controllers/productController');
 
-const productService = new ProductService(Product);
+const productService = new ProductService();
 const product = new ProductController(productService);
 
 module.exports = app => {
