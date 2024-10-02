@@ -1,14 +1,13 @@
-const User = require('../models/user.js');
+const sequelize = require('../db');
+const User = require('../models/user.js')(sequelize);
 
 class userService {
-    constructor() { }
-
     signUp = async (name, email, password) => {
         const returnObj = { err: null, data: null };
 
         try {
             const userWithPassedEmail = await User.findOne({ where: { email } });
-    
+
             if (userWithPassedEmail) {
                 returnObj.err = 'email already in use';
                 return returnObj;
@@ -27,7 +26,17 @@ class userService {
 
             return returnObj;
         } catch (error) {
-            throw error
+            throw error;
+        }
+    }
+
+    findUserByEmail = async (email) => {
+        try {
+            const userWithPassedEmail = await User.findOne({ where: { email } });
+
+            return userWithPassedEmail;
+        } catch (error) {
+            throw error;
         }
     }
 }
