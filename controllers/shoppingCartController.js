@@ -3,19 +3,44 @@ class ShoppingCartController {
         this.shoppingCartService = shoppingCartService;
     }
 
+    sendResponse(res, statusCode, returnObj) {
+        res.status(statusCode).json(returnObj);
+        res.send();
+    }
+
     addItemToCart = async (req, res) => {
+        const returnObj = { statusCode: 201, err: null, data: null };
+
+        // Req.body validations
+        if (!req.body || !Object.values(req.body)?.length) {
+            returnObj.statusCode = 400;
+            returnObj.err = 'No body received or body empty';
+
+            console.log(`controllers/shoppingCartController.addItemToCart - ${returnObj.err}`);
+            this.sendResponse(res, returnObj.statusCode, returnObj);
+            return;
+        }
+
         const { userId, product } = req.body;
 
         if (!userId || !product) {
-            return res.status(400).json({ error: 'userId and product data are required' });
+            returnObj.statusCode = 400;
+            returnObj.err = 'userId and product data are required';
+
+            console.log(`controllers/shoppingCartController.addItemToCart - ${returnObj.err}`);
+            this.sendResponse(res, returnObj.statusCode, returnObj);
+            return;
         }
 
         try {
             const cart = await this.shoppingCartService.addItemToCart(userId, product);
-            return res.status(200).json(cart);
+            returnObj.data = cart;
         } catch (error) {
-            return res.status(500).json({ error: error.message });
+            returnObj.statusCode = 500;
+            returnObj.err = error;
         }
+
+        return this.sendResponse(res, returnObj.statusCode, returnObj);
     }
 
     removeItemFromCart = async (req, res) => {
@@ -35,18 +60,28 @@ class ShoppingCartController {
     }
 
     getCart = async (req, res) => {
+        const returnObj = { statusCode: 200, err: null, data: null };
+
         const { userId } = req.query;
 
         if (!userId) {
-            return res.status(400).json({ error: 'userId is required' });
+            returnObj.statusCode = 400;
+            returnObj.err = 'userId data are required';
+
+            console.log(`controllers/shoppingCartController.getCart - ${returnObj.err}`);
+            this.sendResponse(res, returnObj.statusCode, returnObj);
+            return;
         }
 
         try {
             const cart = await this.shoppingCartService.getCart(userId);
-            return res.status(200).json(cart);
+            returnObj.data = cart;
         } catch (error) {
-            return res.status(500).json({ error: error.message });
+            returnObj.statusCode = 500;
+            returnObj.err = error;
         }
+
+        this.sendResponse(res, returnObj.statusCode, returnObj);
     }
 }
 
