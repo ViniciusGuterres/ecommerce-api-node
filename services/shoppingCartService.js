@@ -16,7 +16,8 @@ class ShoppingCartService {
                 });
             } else {
                 const updatedItems = [...cart.items, product];
-                const updatedPrice = cart.price + product.price;
+
+                const updatedPrice = updatedItems.reduce((total, item) => total + item.price, 0);
 
                 await cart.update({
                     items: updatedItems,
@@ -40,7 +41,8 @@ class ShoppingCartService {
 
             const updatedItems = cart.items.filter(item => item.id !== productId);
             const productToRemove = cart.items.find(item => item.id === productId);
-            const updatedPrice = cart.price - (productToRemove ? productToRemove.price : 0);
+
+            const updatedPrice = updatedItems.reduce((total, item) => total + item.price, 0);
 
             await cart.update({
                 items: updatedItems,
@@ -54,7 +56,7 @@ class ShoppingCartService {
     }
 
     async getCart(userId) {
-        // try {
+        try {
             const cart = await ShoppingCart.findOne({ where: { user_id: userId } });
 
             if (!cart) {
@@ -62,9 +64,9 @@ class ShoppingCartService {
             }
 
             return cart;
-        // } catch (error) {
-        //     throw error;
-        // }
+        } catch (error) {
+            throw error;
+        }
     }
 }
 
