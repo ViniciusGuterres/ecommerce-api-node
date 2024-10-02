@@ -2,7 +2,7 @@ const sequelize = require('../db');
 const Product = require('../models/product.js')(sequelize);
 
 class ProductService {
-    async createProduct(name, price, description) {
+    async createProduct(name, price, description, inventory_amount) {
         const returnObj = { err: null, data: null };
 
         try {
@@ -10,11 +10,11 @@ class ProductService {
                 name,
                 price,
                 description,
+                inventory_amount
             });
 
             returnObj.data = newProduct;
         } catch (error) {
-            console.log("🚀 ~ ProductService ~ createProduct ~ error:", error)
             returnObj.err = error.message;
         }
 
@@ -22,12 +22,17 @@ class ProductService {
     }
 
     async getAllProducts() {
+        const returnObj = { err: null, data: null };
+
         try {
             const products = await Product.findAll();
-            return products;
+
+            returnObj.data = products;
         } catch (error) {
-            throw error;
+            returnObj.err = error.message;
         }
+
+        return returnObj;
     }
 
     async updateProduct(productId, productData) {

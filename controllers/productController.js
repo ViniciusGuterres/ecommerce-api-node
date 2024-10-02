@@ -22,7 +22,7 @@ class ProductController {
             return;
         }
 
-        const { name, price, description } = req.body;
+        const { name, price, description, inventory_amount } = req.body;
 
         if (!name || typeof name !== 'string') {
             returnObj.statusCode = 400;
@@ -40,7 +40,15 @@ class ProductController {
             return this.sendResponse(res, returnObj.statusCode, returnObj);
         }
 
-        const { err, data } = await this.productService.createProduct(name, price, description);
+        if (inventory_amount && !parseInt(inventory_amount)) {
+            returnObj.statusCode = 400;
+            returnObj.err = 'inventory_amount wrong format';
+
+            console.log(`controllers/product.createProduct - ${returnObj.err}`);
+            return this.sendResponse(res, returnObj.statusCode, returnObj);
+        }
+
+        const { err, data } = await this.productService.createProduct(name, price, description, inventory_amount);
 
         if (err) {
             returnObj.statusCode = 500;
@@ -62,7 +70,7 @@ class ProductController {
         }
     }
 
-    async updateProduct(req, res) {
+    updateProduct = async (req, res) => {
         const returnObj = { statusCode: 200, err: null, data: null };
 
         // Req.body validations
