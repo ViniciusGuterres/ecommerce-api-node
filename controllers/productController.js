@@ -127,7 +127,17 @@ class ProductController {
 
     deleteProduct = async (req, res) => {
         const returnObj = { statusCode: 200, err: null };
+        
         const { id } = req.params;
+
+        if (!id) {
+            returnObj.statusCode = 400;
+            returnObj.err = 'No id received';
+
+            console.log(`controllers/product.updateProduct - ${returnObj.err}`);
+            this.sendResponse(res, returnObj.statusCode, returnObj);
+            return;
+        }
 
         const { err } = await this.productService.deleteProduct(id);
 
