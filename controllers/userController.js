@@ -1,5 +1,3 @@
-const UserService = require('../services/userService');
-
 class User {
     constructor(UserService){
         this.userService = UserService;
