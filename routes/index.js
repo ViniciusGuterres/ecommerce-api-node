@@ -1,6 +1,7 @@
 const usersRoutes = require('./userRoutes.js');
 const productsRoutes = require('./productRoutes.js');
 const shoppingCartsRoutes = require('./shoppingCartRoutes.js');
+const paymentTransactionRoutes = require('./paymentTransactionRoutes.js');
 
 module.exports = app => {
     app.get('/', (req, res) => {
@@ -10,6 +11,7 @@ module.exports = app => {
     usersRoutes(app);
     productsRoutes(app);
     shoppingCartsRoutes(app);
+    paymentTransactionRoutes(app);
     
     // Applying a 404 route handler for all methods
     app.use((req, res) => {
