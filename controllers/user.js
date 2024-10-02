@@ -10,6 +10,11 @@ class User {
         res.send();
     }
 
+    validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
     signUp = async (req, res) => {
         const returnObj = { statusCode: 201, err: null, data: null };
 
@@ -23,7 +28,7 @@ class User {
             return;
         }
 
-        const {name, email, password} = req.body;
+        const { name, email, password } = req.body;
 
         if (!name || typeof name !== 'string') {
             returnObj.statusCode = 400;
@@ -37,6 +42,15 @@ class User {
         if (!email || typeof email !== 'string') {
             returnObj.statusCode = 400;
             returnObj.err = 'email no received or type is not a string';
+
+            console.log(`controllers/user.signUp - ${returnObj.err}`);
+            this.sendResponse(res, returnObj.statusCode, returnObj);
+            return;
+        }
+
+        if (!this.validateEmail(email)) {
+            returnObj.statusCode = 400;
+            returnObj.err = 'email format not valid';
 
             console.log(`controllers/user.signUp - ${returnObj.err}`);
             this.sendResponse(res, returnObj.statusCode, returnObj);
