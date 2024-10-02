@@ -1,8 +1,8 @@
 const UserService = require('../services/userService');
 
 class User {
-    constructor() {
-        this.userService = new UserService();
+    constructor(UserService){
+        this.userService = UserService;
     }
 
     sendResponse(res, statusCode, returnObj) {
