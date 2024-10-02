@@ -56,7 +56,6 @@ class ShoppingCartService {
     async getCart(userId) {
         // try {
             const cart = await ShoppingCart.findOne({ where: { user_id: userId } });
-            console.log("🚀 ~ ShoppingCartService ~ getCart ~ cart:", cart)
 
             if (!cart) {
                 throw new Error('Cart not found for this user');
