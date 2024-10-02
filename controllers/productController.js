@@ -89,7 +89,18 @@ class ProductController {
             return;
         }
 
-        const productData = req.body;
+        const { name, price, description, inventory_amount } = req.body;
+
+        const productData = { name, price, description, inventory_amount };
+
+        if (!name && !price && !description && !inventory_amount) {
+            returnObj.statusCode = 400;
+            returnObj.err = 'No changes found';
+
+            console.log(`controllers/product.updateProduct - ${returnObj.err}`);
+            this.sendResponse(res, returnObj.statusCode, returnObj);
+            return;
+        }
 
         if (!req.params.id) {
             returnObj.statusCode = 400;
