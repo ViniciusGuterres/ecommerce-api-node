@@ -1,5 +1,6 @@
 const sequelize = require('../db');
 const User = require('../models/user.js')(sequelize);
+const { hashPassword } = require('../auth.js');
 
 class userService {
     signUp = async (name, email, password) => {
@@ -13,10 +14,13 @@ class userService {
                 return returnObj;
             }
 
+            // auth method
+            const passwordHashed = await hashPassword(password);
+
             const newUser = await User.create({
                 email,
                 name,
-                password,
+                password: passwordHashed,
             });
 
             // Deleting the password to do not return in the request 
