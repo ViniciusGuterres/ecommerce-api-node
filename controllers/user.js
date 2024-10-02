@@ -1,8 +1,8 @@
-const AuthService = require('../services/auth.js');
+const UserService = require('../services/userService');
 
 class User {
     constructor() {
-        this.authService = new AuthService();
+        this.userService = new UserService();
     }
 
     sendResponse(res, statusCode, returnObj) {
@@ -23,7 +23,9 @@ class User {
             return;
         }
 
-        if (!req.body.name || typeof req.body.name !== 'string') {
+        const {name, email, password} = req.body;
+
+        if (!name || typeof name !== 'string') {
             returnObj.statusCode = 400;
             returnObj.err = 'name no received or type is not a string';
 
@@ -32,7 +34,7 @@ class User {
             return;
         }
 
-        if (!req.body.email || typeof req.body.email !== 'string') {
+        if (!email || typeof email !== 'string') {
             returnObj.statusCode = 400;
             returnObj.err = 'email no received or type is not a string';
 
@@ -41,7 +43,7 @@ class User {
             return;
         }
 
-        if (!req.body.password || typeof req.body.password !== 'string') {
+        if (!password || typeof password !== 'string') {
             returnObj.statusCode = 400;
             returnObj.err = 'password no received or type is not a string';
 
@@ -50,7 +52,18 @@ class User {
             return;
         }
 
-        await this.authService.signUp();
+        const { err, data } = await this.userService.signUp(name, email, password);
+
+        if (err) {
+            returnObj.statusCode = 500;
+            returnObj.err = err;
+
+            console.log(`controllers/user.signUp - ${returnObj.err}`);
+            this.sendResponse(res, returnObj.statusCode, returnObj);
+            return;
+        }
+
+        returnObj.data = data;
 
         this.sendResponse(res, returnObj.statusCode, returnObj);
     }
