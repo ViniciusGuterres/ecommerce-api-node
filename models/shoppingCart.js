@@ -22,10 +22,6 @@ module.exports = (sequelize) => {
         },
         price: {
             type: Sequelize.FLOAT,
-            allowNull: false,
-        },
-        inventory_amount: {
-            type: Sequelize.INTEGER,
             allowNull: true,
         }
     }, {
