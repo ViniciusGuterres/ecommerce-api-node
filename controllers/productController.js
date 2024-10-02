@@ -61,13 +61,19 @@ class ProductController {
     }
 
     getAllProducts = async (req, res) => {
+        const returnObj = { statusCode: 200, err: null, data: null };
+
         try {
             const products = await this.productService.getAllProducts();
-            res.status(200).json(products);
+
+            returnObj.data = products;
         } catch (error) {
             console.log(`controllers/product.getAllProducts - ${error}`);
-            res.status(500).json({ err: 'Failed to fetch products' });
+            returnObj.err = 'Failed to fetch products';
+            returnObj.statusCode = 500;
         }
+
+        this.sendResponse(res, returnObj.statusCode, returnObj);
     }
 
     updateProduct = async (req, res) => {
