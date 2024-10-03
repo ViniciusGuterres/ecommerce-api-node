@@ -1,6 +1,6 @@
 const sequelize = require('../db');
 const User = require('../models/user.js')(sequelize);
-const { hashPassword } = require('../auth.js');
+const { hashPassword, comparePassword } = require('../auth.js');
 
 class userService {
     signUp = async (name, email, password) => {
@@ -32,6 +32,34 @@ class userService {
         } catch (error) {
             throw error;
         }
+    }
+
+    signIn = async (email, password) => {
+        const returnObj = { err: null, data: null };
+
+        try {
+            // Get user filtered by email
+            const user = await User.findOne({ where: { email } });
+
+            if (!user) {
+                returnObj.err = 'Invalid email or password';
+                return returnObj;
+            }
+
+            const mySaveUserPassword = user.dataValues.password;
+            const comparePasswordResult = await comparePassword(mySaveUserPassword, password); 
+
+            if (!comparePasswordResult) {
+                returnObj.err = 'Invalid email or password';
+                return returnObj;
+            }
+
+            returnObj.data = 'user found';
+        } catch (error) {
+            throw error;
+        }
+
+        return returnObj;
     }
 
     findUserByEmail = async (email) => {
