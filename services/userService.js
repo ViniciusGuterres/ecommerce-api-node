@@ -1,6 +1,6 @@
 const sequelize = require('../db');
 const User = require('../models/user.js')(sequelize);
-const { hashPassword, comparePassword } = require('../auth.js');
+const { hashPassword, comparePassword, generateToken } = require('../auth.js');
 
 class userService {
     signUp = async (name, email, password) => {
@@ -54,7 +54,9 @@ class userService {
                 return returnObj;
             }
 
-            returnObj.data = 'user found';
+            const jwtToken = await generateToken(user);
+
+            returnObj.data = jwtToken;
         } catch (error) {
             throw error;
         }
