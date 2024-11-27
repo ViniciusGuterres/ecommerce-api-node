@@ -30,6 +30,7 @@ async function verifyToken(req, res, next) {
         if (err) {
             return res.status(401).json({ Message: 'Token inválido' });
         }
+
         req.user = decoded;
         next();
     });
@@ -58,7 +59,7 @@ async function comparePassword(savePasswordHashed, reqPassword) {
         return false;
     }
 
-    return true;;
+    return true;
 }
 
 module.exports = { generateToken, verifyToken, hashPassword, comparePassword };
