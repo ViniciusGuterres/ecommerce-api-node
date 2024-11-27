@@ -1,28 +1,23 @@
 {
     "development": {
-        "server": {
-            "port": 8080
-        },
-        "db": {
-            "username": "myUser",
-            "password": "123",
-            "database": "db",
-            "host": "127.0.0.1",
-            "dialect": "mysql"
-        }
+      "username": "postgres",
+      "password": "admin",
+      "database": "ecommerce",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
     },
     "test": {
-        "username": "",
-        "password": "",
-        "database": "database_test",
-        "host": "127.0.0.1",
-        "dialect": "mysql"
+      "username": "",
+      "password": "",
+      "database": "database_test",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
     },
     "production": {
-        "username": "",
-        "password": "",
-        "database": "database_production",
-        "host": "127.0.0.1",
-        "dialect": "mysql"
+      "username": "",
+      "password": "",
+      "database": "database_production",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
     }
-}
+  }  

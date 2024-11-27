@@ -10,6 +10,7 @@ async function generateToken(user) {
     const id = user.id;
     const email = user.email;
     const token = jwt.sign({ id, email }, secret, { expiresIn: '1h' });
+
     return token;
 }
 
@@ -61,17 +62,3 @@ async function comparePassword(savePasswordHashed, reqPassword) {
 }
 
 module.exports = { generateToken, verifyToken, hashPassword, comparePassword };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
