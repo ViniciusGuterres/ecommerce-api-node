@@ -5,8 +5,7 @@ class ProductController {
     }
 
     sendResponse(res, statusCode, returnObj) {
-        res.status(statusCode).json(returnObj);
-        res.send();
+        return res.status(statusCode).json(returnObj);
     }
 
     createProduct = async (req, res) => {

@@ -4,8 +4,7 @@ class ShoppingCartController {
     }
 
     sendResponse(res, statusCode, returnObj) {
-        res.status(statusCode).json(returnObj);
-        res.send();
+        return res.status(statusCode).json(returnObj);
     }
 
     addItemToCart = async (req, res) => {
