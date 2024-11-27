@@ -56,7 +56,10 @@ class userService {
 
             const jwtToken = await generateToken(user);
 
-            returnObj.data = jwtToken;
+            returnObj.data = {
+                jwtToken,
+                id: user.dataValues.id,
+            }
         } catch (error) {
             throw error;
         }
